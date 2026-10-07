@@ -1,65 +1,59 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moda Store</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light d-flex flex-column min-vh-100">
+{% extends 'base.html' %}
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
-        Moda Store
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ url_for('index') }}">Início</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('cadastrar_usuarios') }}">Cadastrar Usuários</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('listar_usuarios') }}">Listar Usuários</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('cadastrar_produtos') }}">Cadastrar Produtos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('listar_produtos') }}">Listar Produtos</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+{% block title %}Início — Moda Store{% endblock %}
 
-  <!-- Hero Header -->
-  <header class="py-5 bg-white border-bottom shadow-sm">
-    <div class="container text-center">
+{% block content %}
+<div class="container py-4">
+  {% if 'usuario_logado' in session %}
+    <!-- Conteúdo exibido APÓS fazer login -->
+    <header class="py-5 bg-white border-bottom shadow-sm text-center rounded">
       <h1 class="display-5 fw-bold text-dark mb-3">Moda Store</h1>
       <p class="lead text-muted col-lg-8 mx-auto">
-        Moda Store é uma aplicação web desenvolvida para gerenciar usuários e produtos de uma loja de moda, oferecendo funcionalidades de cadastro, listagem e monitoramento de informações essenciais para o negócio.  
+        Bem-vindo(a), <strong>{{ session['usuario_logado']['nome'] }}</strong>! Moda Store é uma aplicação web desenvolvida para gerenciar usuários e produtos de uma loja de moda.
       </p>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger mt-2">Sair da Conta</a>
+    </header>
+  {% else %}
+    <!-- Card de Login na Página Inicial (Conforme Imagem) -->
+    <div class="d-flex justify-content-center my-4">
+      <div class="card shadow-sm p-4" style="width: 100%; max-width: 420px; border-radius: 0;">
+        
+        
+        <div class="text-center mb-3">
+          <div class="d-inline-block fw-bold" style="font-family: Arial, sans-serif; font-size: 2rem; color: #2b3e50; border-bottom: 2px solid #555;">
+            MODA STORE
+          </div>
+          <div class="text-secondary small" style="font-size: 0.75rem;">LOJA DE ROUPAS
+        </div>
+
+        <h3 class="text-center mb-4 text-dark fw-normal">Login</h3>
+
+        <form action="{{ url_for('index') }}" method="POST">
+          <div class="mb-3">
+            <label for="email" class="form-label text-secondary mb-1">E-mail:</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu e-mail" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="senha" class="form-label text-secondary mb-1">Password:</label>
+            <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha" required>
+          </div>
+
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-danger fw-bold py-2" style="background-color: #dc3545; border: none;">Entrar</button>
+          </div>
+
+          <div class="text-center mb-3">
+            <a href="#" class="text-decoration-none text-primary small">Recuperar Senha</a>
+          </div>
+
+          <div class="d-grid">
+            <a href="{{ url_for('cadastrar_usuarios') }}" class="btn btn-primary fw-bold py-2 text-uppercase" style="background-color: #007bff; border: none;">CADASTRAR</a>
+          </div>
+        </form>
+
+      </div>
     </div>
-  </header>
-
-  
-
-  <!-- Footer -->
-  <footer class="bg-white border-top py-3 text-center text-muted mt-auto">
-    <div class="container">
-      <small>Fatec Jahu — Gabriel Angelotti</small>
-    </div>
-  </footer>
-
-  <!-- Bootstrap 5 JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  {% endif %}
+</div>
+{% endblock %}
